@@ -25,10 +25,14 @@
   --ink-faint:  #8694A7;
   --paper:      #FBFBFA;
   --panel:      #F2F3F2;
+  --card:       #FFFFFF;
   --rule:       #DDE0E2;
   --navy:       #0D1B3E;
   --teal:       #2E7D82;
   --teal-soft:  #E7F0F0;
+  --band:       #0D1B3E;
+  --band-ink:   #E6EAEF;
+  --band-soft:  #A9B6C8;
 
   --display: "Spectral", Georgia, "Times New Roman", serif;
   --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -36,288 +40,342 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ink:       #E6EAEF;
-    --ink-soft:  #A5B2C2;
-    --ink-faint: #6D7C8E;
-    --paper:     #0E1620;
-    --panel:     #16202C;
-    --rule:      #26323F;
-    --navy:      #C9D6EA;
-    --teal:      #67B3B6;
-    --teal-soft: #15282B;
+    --ink: #E6EAEF; --ink-soft: #A5B2C2; --ink-faint: #6D7C8E;
+    --paper: #0E1620; --panel: #121C27; --card: #16202C; --rule: #26323F;
+    --navy: #C9D6EA; --teal: #67B3B6; --teal-soft: #15282B;
+    --band: #16202C; --band-ink: #E6EAEF; --band-soft: #A5B2C2;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --ink:       #E6EAEF;
-  --ink-soft:  #A5B2C2;
-  --ink-faint: #6D7C8E;
-  --paper:     #0E1620;
-  --panel:     #16202C;
-  --rule:      #26323F;
-  --navy:      #C9D6EA;
-  --teal:      #67B3B6;
-  --teal-soft: #15282B;
+  --ink: #E6EAEF; --ink-soft: #A5B2C2; --ink-faint: #6D7C8E;
+  --paper: #0E1620; --panel: #121C27; --card: #16202C; --rule: #26323F;
+  --navy: #C9D6EA; --teal: #67B3B6; --teal-soft: #15282B;
+  --band: #16202C; --band-ink: #E6EAEF; --band-soft: #A5B2C2;
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
-
+html { scroll-behavior: smooth; scroll-padding-top: 6.5rem; }
 body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--body);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.65;
   margin: 0;
 }
+a { color: inherit; }
 
 .wrap {
-  max-width: 44rem;
+  max-width: 76rem;
   margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
 }
 
-/* ---- masthead ---- */
-.masthead { padding-block: 2.5rem 0; }
-.mark { display: flex; align-items: center; gap: 1.2rem; }
+/* ---- top bar ---- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.topbar .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem; min-height: 5.5rem;
+}
+.mark { display: flex; align-items: center; gap: 1rem; text-decoration: none; }
 .mark svg { flex: none; }
-.mark-type { line-height: 1.1; }
+.mark-type { line-height: 1.05; }
 .mark-type b {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: 2.4rem;
-  letter-spacing: -0.01em;
-  color: var(--navy);
+  font-family: var(--display); font-weight: 400;
+  font-size: 2.1rem; letter-spacing: -0.01em; color: var(--navy);
 }
 .mark-type b i { font-style: normal; color: var(--teal); }
 .mark-type span {
-  display: block;
-  font-size: 0.78rem;
-  letter-spacing: 0.17em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-top: 0.25rem;
+  display: block; font-size: 0.68rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-faint); margin-top: 0.3rem;
+}
+.nav { display: flex; align-items: center; gap: 2rem; }
+.nav a {
+  text-decoration: none; font-size: 0.9rem; font-weight: 500;
+  color: var(--ink-soft);
+}
+.nav a:hover { color: var(--teal); }
+.nav a.cta {
+  color: var(--paper); background: var(--navy);
+  padding: 0.6rem 1.2rem; font-weight: 600; letter-spacing: 0.02em;
+}
+.nav a.cta:hover { background: var(--teal); color: var(--paper); }
+@media (max-width: 62rem) { .nav a:not(.cta) { display: none; } }
+@media (max-width: 34rem) {
+  .mark svg { width: 60px; height: 43px; }
+  .mark-type b { font-size: 1.6rem; }
+  .mark-type span { display: none; }
 }
 
-/* ---- sections ---- */
-section { padding-block: 3rem; border-top: 1px solid var(--rule); }
-section:first-of-type { border-top: none; }
-
-h1 {
-  font-family: var(--display);
-  font-weight: 300;
-  font-size: clamp(1.9rem, 5.2vw, 2.9rem);
-  line-height: 1.18;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-  margin: 0 0 1.1rem;
+/* ---- hero ---- */
+.hero {
+  background:
+    linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 100% 4rem,
+    var(--panel);
+  background-blend-mode: normal;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
 }
-h2 {
-  font-family: var(--body);
-  font-weight: 600;
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin: 0 0 1.4rem;
+.hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--panel) 0%, color-mix(in srgb, var(--panel) 70%, transparent) 60%, var(--panel) 100%);
+}
+.hero .wrap {
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 4.5rem; padding-block: 5.5rem 5rem; align-items: center;
 }
 .eyebrow {
-  display: block;
-  font-weight: 600;
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 0.9rem;
+  display: block; font-weight: 600; font-size: 0.76rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 1.2rem;
+}
+h1 {
+  font-family: var(--display); font-weight: 300;
+  font-size: clamp(2.3rem, 4.6vw, 4rem);
+  line-height: 1.08; letter-spacing: -0.02em;
+  text-wrap: balance; margin: 0 0 1.6rem; color: var(--navy);
+}
+.lede { font-size: 1.2rem; color: var(--ink-soft); max-width: 40rem; }
+.lede.ai {
+  border-left: 3px solid var(--teal); padding-left: 1.1rem;
+  color: var(--ink); font-size: 1.1rem;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.2rem; }
+.btn {
+  display: inline-block; text-decoration: none;
+  font-weight: 600; font-size: 0.9rem; letter-spacing: 0.02em;
+  padding: 0.85rem 1.5rem; border: 1px solid var(--navy);
+}
+.btn.solid { background: var(--navy); color: var(--paper); }
+.btn.solid:hover { background: var(--teal); border-color: var(--teal); }
+.btn.line { color: var(--navy); }
+.btn.line:hover { border-color: var(--teal); color: var(--teal); }
+
+.facts {
+  background: var(--card); border: 1px solid var(--rule);
+  box-shadow: 0 20px 50px -30px rgba(13, 27, 62, 0.35);
+}
+.facts-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule);
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.fact { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--rule); }
+.fact:last-child { border-bottom: none; }
+.fact .v {
+  font-family: var(--display); font-size: 2.1rem; line-height: 1.1;
+  color: var(--navy); font-weight: 400;
+}
+.fact .v small { font-size: 1rem; color: var(--ink-faint); margin-left: 0.3rem; }
+.fact .k { font-size: 0.86rem; color: var(--ink-soft); margin-top: 0.3rem; }
+
+/* ---- intro strip ---- */
+.intro { border-bottom: 1px solid var(--rule); }
+.intro .wrap {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem;
+  padding-block: 3.5rem;
+}
+.intro p { color: var(--ink-soft); max-width: none; margin: 0; }
+
+/* ---- sections ---- */
+section.block { padding-block: 5rem; border-top: 1px solid var(--rule); }
+section.block:first-of-type { border-top: none; }
+.block .wrap {
+  display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 4rem;
+}
+.block-label { position: sticky; top: 7.5rem; align-self: start; }
+h2 {
+  font-family: var(--body); font-weight: 600; font-size: 0.76rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--teal); margin: 0;
+}
+.block-label .idx {
+  display: block; font-family: var(--data); font-size: 0.78rem;
+  color: var(--ink-faint); margin-bottom: 0.6rem;
 }
 h3 {
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 1.12rem;
-  margin: 0 0 0.35rem;
-  text-wrap: balance;
+  font-family: var(--display); font-weight: 500;
+  font-size: 1.3rem; line-height: 1.25; margin: 0 0 0.6rem;
+  text-wrap: balance; color: var(--navy);
 }
-p { margin: 0 0 1rem; max-width: 36rem; }
+p { margin: 0 0 1.1rem; max-width: 46rem; }
 p:last-child { margin-bottom: 0; }
-.lede { font-size: 1.1rem; color: var(--ink-soft); max-width: 34rem; }
 em { font-style: italic; }
-
-.stack { display: grid; gap: 1.9rem; }
+.alt { background: var(--panel); }
 
 /* ---- the interval device ---- */
-.chart { margin: 0.5rem 0 0; }
-.chart-cap {
-  font-size: 0.82rem;
-  color: var(--ink-soft);
-  max-width: 34rem;
-  margin: 1.1rem 0 0;
+.chart {
+  margin: 0; background: var(--card); border: 1px solid var(--rule);
+  padding: 2rem 2rem 1.5rem;
 }
+.chart-cap { font-size: 0.9rem; color: var(--ink-soft); max-width: 50rem; margin: 1.3rem 0 0; }
 .row {
-  display: grid;
-  grid-template-columns: 9.5rem 1fr;
-  align-items: center;
-  gap: 0.8rem;
-  padding-block: 0.3rem;
-}
-.row-name { font-size: 0.84rem; color: var(--ink-soft); }
-.track { position: relative; height: 1.3rem; min-width: 0; }
-.track .base {
-  position: absolute; left: 0; right: 0; top: 50%;
-  border-top: 1px dotted var(--rule);
-}
-.bar {
-  position: absolute; top: 50%; height: 2px;
-  background: var(--teal); transform: translateY(-50%);
-  border-radius: 1px;
-}
-.bar.quiet { background: var(--ink-faint); opacity: 0.55; }
-.cap {
-  position: absolute; top: 50%; width: 1px; height: 0.62rem;
-  background: var(--teal); transform: translateY(-50%);
-}
-.cap.quiet { background: var(--ink-faint); opacity: 0.55; }
-.dot {
-  position: absolute; top: 50%; width: 7px; height: 7px;
-  border-radius: 50%; background: var(--navy);
-  transform: translate(-50%, -50%);
-}
-.dot.quiet { background: var(--ink-faint); }
-.ref {
-  position: absolute; top: 0; bottom: 0; width: 1px;
-  background: var(--ink-faint); opacity: 0.45;
-}
-.axis {
   display: grid; grid-template-columns: 9.5rem 1fr;
-  gap: 0.8rem; margin-top: 0.4rem;
+  align-items: center; gap: 0.8rem; padding-block: 0.45rem;
 }
+.row-name { font-size: 0.9rem; color: var(--ink-soft); }
+.track { position: relative; height: 1.4rem; min-width: 0; }
+.track .base { position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dotted var(--rule); }
+.bar { position: absolute; top: 50%; height: 3px; background: var(--teal); transform: translateY(-50%); border-radius: 1px; }
+.bar.quiet { background: var(--ink-faint); opacity: 0.55; }
+.cap { position: absolute; top: 50%; width: 1.5px; height: 0.75rem; background: var(--teal); transform: translateY(-50%); }
+.cap.quiet { background: var(--ink-faint); opacity: 0.55; }
+.dot { position: absolute; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--navy); transform: translate(-50%, -50%); }
+.dot.quiet { background: var(--ink-faint); }
+.ref { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ink-faint); opacity: 0.45; }
+.axis { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.8rem; margin-top: 0.5rem; }
 .axis-track { position: relative; height: 1.1rem; font-family: var(--data); }
-.tick {
-  position: absolute; top: 0; font-size: 0.64rem;
-  color: var(--ink-faint); transform: translateX(-50%);
-  white-space: nowrap;
-}
-@media (max-width: 30rem) {
-  .row, .axis { grid-template-columns: 6.6rem 1fr; }
-  .row-name { font-size: 0.76rem; }
-}
+.tick { position: absolute; top: 0; font-size: 0.7rem; color: var(--ink-faint); transform: translateX(-50%); white-space: nowrap; }
 
 /* ---- benchmark table ---- */
-.tbl { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 0 0 1.1rem; }
+.tbl-wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--rule); margin: 0.4rem 0 1.6rem; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .tbl th {
-  text-align: left; font-weight: 600; font-size: 0.66rem;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-faint); padding: 0 0.6rem 0.45rem 0;
-  border-bottom: 1px solid var(--rule); white-space: nowrap;
+  text-align: left; font-weight: 600; font-size: 0.68rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
+  padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--rule);
+  white-space: nowrap; background: var(--panel);
 }
 .tbl td {
-  padding: 0.45rem 0.6rem 0.45rem 0;
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--data); font-size: 0.8rem; color: var(--ink-soft);
-  white-space: nowrap;
+  padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--rule);
+  font-family: var(--data); font-size: 0.86rem; color: var(--ink-soft); white-space: nowrap;
 }
-.tbl td:first-child { font-family: var(--body); font-size: 0.86rem; color: var(--ink); }
-.tbl-wrap { overflow-x: auto; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl td:first-child { font-family: var(--body); font-size: 0.92rem; color: var(--ink); font-weight: 500; }
+.tbl td:last-child { color: var(--teal); font-weight: 500; }
 
 /* ---- findings ---- */
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.8rem; }
 .finding {
-  border-left: 2px solid var(--teal);
-  padding: 0.1rem 0 0.1rem 1.1rem;
+  background: var(--card); border: 1px solid var(--rule);
+  border-top: 3px solid var(--teal); padding: 1.8rem;
+  display: flex; flex-direction: column;
 }
 .finding .num {
-  font-family: var(--data);
-  font-size: 1.02rem;
-  color: var(--navy);
-  font-weight: 500;
+  font-family: var(--display); font-size: 1.3rem; line-height: 1.3;
+  color: var(--navy); font-weight: 500; margin-bottom: 0.8rem;
 }
-.finding p { font-size: 0.93rem; color: var(--ink-soft); margin-bottom: 0; }
+.finding p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; }
 .finding .src {
-  display: block; font-size: 0.74rem; color: var(--ink-faint);
-  margin-top: 0.5rem; font-family: var(--data);
+  display: block; font-size: 0.76rem; color: var(--ink-faint);
+  margin-top: auto; padding-top: 1.2rem; font-family: var(--data);
 }
 
-/* ---- lists ---- */
-.steps { display: grid; gap: 1.5rem; margin: 0; padding: 0; list-style: none; }
-.steps li { display: grid; grid-template-columns: 1.6rem 1fr; gap: 0.7rem; }
-.steps .glyph { padding-top: 0.42rem; }
+/* ---- method ---- */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 0; padding: 0; list-style: none; }
+.steps li { background: var(--card); border: 1px solid var(--rule); padding: 1.8rem; }
+.steps .glyph {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.8rem; height: 2.8rem; background: var(--teal-soft); margin-bottom: 1.2rem;
+}
 .steps p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; }
 
-.defs { margin: 0; }
+/* ---- engagement ---- */
+.defs { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.defs div { background: var(--card); border: 1px solid var(--rule); padding: 1.6rem 1.8rem; }
 .defs dt {
-  font-family: var(--body); font-weight: 600; font-size: 0.72rem;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-faint); margin-top: 1.4rem;
+  font-weight: 600; font-size: 0.74rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--teal);
 }
-.defs dt:first-child { margin-top: 0; }
-.defs dd { margin: 0.4rem 0 0; font-size: 0.95rem; color: var(--ink-soft); max-width: 34rem; }
+.defs dd { margin: 0.6rem 0 0; font-size: 0.97rem; color: var(--ink-soft); }
 
-.papers { list-style: none; margin: 0; padding: 0; }
-.papers li { padding-block: 0.9rem; border-top: 1px solid var(--rule); }
-.papers li:first-child { border-top: none; padding-top: 0; }
-.papers .t { display: block; font-family: var(--display); font-size: 1.02rem; color: var(--ink); }
-.papers .v { display: block; font-size: 0.78rem; color: var(--ink-faint); font-family: var(--data); margin-top: 0.3rem; }
+/* ---- writing ---- */
+.papers { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.papers li {
+  display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: baseline;
+  padding-block: 1.2rem; border-bottom: 1px solid var(--rule);
+}
+.papers .t { font-family: var(--display); font-size: 1.2rem; color: var(--navy); }
+.papers .v { font-size: 0.8rem; color: var(--ink-faint); font-family: var(--data); white-space: nowrap; }
 
 /* ---- limits panel ---- */
-.limits {
-  background: var(--panel);
-  border-left: 2px solid var(--ink-faint);
-  padding: 1.5rem 1.4rem;
-}
-.limits h2 { color: var(--ink-faint); }
-.limits ul { margin: 0; padding-left: 1.1rem; }
-.limits li { margin-bottom: 0.7rem; color: var(--ink-soft); font-size: 0.95rem; }
-.limits li:last-child { margin-bottom: 0; }
+.limits { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--ink-faint); padding: 2rem 2.2rem; }
+.limits ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.9rem; }
+.limits li { color: var(--ink-soft); font-size: 0.98rem; }
 
-/* ---- enquiry form ---- */
-.form { display: grid; gap: 1.1rem; max-width: 34rem; margin-top: 1.6rem; }
+/* ---- enquiry band ---- */
+.band { background: var(--band); color: var(--band-ink); padding-block: 5.5rem; }
+.band .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 5rem; align-items: start; }
+.band h2 { color: #7FC4C7; margin-bottom: 1.2rem; }
+.band .big {
+  font-family: var(--display); font-weight: 300; font-size: 2.4rem;
+  line-height: 1.15; margin: 0 0 1.2rem; color: var(--band-ink);
+}
+.band p { color: var(--band-soft); }
+.form {
+  display: grid; gap: 1.1rem; background: var(--card); color: var(--ink);
+  padding: 2.2rem; border: 1px solid var(--rule);
+}
 .field { display: grid; gap: 0.4rem; min-width: 0; }
 .field label {
-  font-family: var(--body); font-weight: 600; font-size: 0.68rem;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
+  font-weight: 600; font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-faint);
 }
 .field input, .field textarea {
-  font-family: var(--body); font-size: 0.95rem; color: var(--ink);
+  font-family: var(--body); font-size: 0.97rem; color: var(--ink);
   background: var(--paper); border: 1px solid var(--rule); border-radius: 0;
-  padding: 0.55rem 0.7rem; width: 100%; min-width: 0;
+  padding: 0.7rem 0.8rem; width: 100%; min-width: 0;
 }
-.field textarea { resize: vertical; min-height: 7rem; line-height: 1.5; }
+.field textarea { resize: vertical; min-height: 8rem; line-height: 1.5; }
 .field input:focus-visible, .field textarea:focus-visible {
   outline: 2px solid var(--teal); outline-offset: -1px; border-color: var(--teal);
 }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
-@media (max-width: 30rem) { .pair { grid-template-columns: 1fr; } }
 .form button {
-  font-family: var(--body); font-weight: 600; font-size: 0.78rem;
-  letter-spacing: 0.09em; text-transform: uppercase;
+  font-family: var(--body); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.03em;
   color: var(--paper); background: var(--navy);
-  border: none; padding: 0.7rem 1.4rem; cursor: pointer; justify-self: start;
+  border: none; padding: 0.85rem 1.8rem; cursor: pointer; justify-self: start;
 }
 .form button:hover, .form button:focus-visible { background: var(--teal); }
 .form button[disabled] { opacity: 0.45; cursor: default; }
-.form-status {
-  font-size: 0.88rem; color: var(--ink-soft);
-  min-height: 1.3rem; margin: 0; font-family: var(--data);
-}
+.form-status { font-size: 0.88rem; color: var(--ink-soft); min-height: 1.3rem; margin: 0; font-family: var(--data); }
 .form-status[data-state="error"] { color: var(--navy); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-footer {
-  border-top: 1px solid var(--rule);
-  padding-block: 1.8rem 3rem;
-  font-size: 0.78rem;
-  color: var(--ink-faint);
-  display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem;
-  justify-content: space-between;
+
+footer { border-top: 1px solid var(--rule); }
+footer .wrap {
+  padding-block: 2rem 2.5rem; font-size: 0.82rem; color: var(--ink-faint);
+  display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; justify-content: space-between;
+}
+
+/* ---- responsive ---- */
+@media (max-width: 62rem) {
+  .hero .wrap, .intro .wrap, .band .wrap { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+  .hero .wrap { padding-block: 3.5rem; }
+  .block .wrap { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .block-label { position: static; }
+  .steps { grid-template-columns: 1fr; }
+  section.block { padding-block: 3.5rem; }
+  .band { padding-block: 3.5rem; }
+}
+@media (max-width: 44rem) {
+  .cards, .defs, .pair { grid-template-columns: 1fr; }
+  .papers li { grid-template-columns: 1fr; gap: 0.3rem; }
+  .row, .axis { grid-template-columns: 6.6rem 1fr; }
+  .row-name { font-size: 0.78rem; }
+  .chart { padding: 1.2rem 1rem 1rem; }
+  .form { padding: 1.4rem; }
+  .band .big { font-size: 1.9rem; }
 }
 </style>
 
 </head>
 <body>
-<div class="wrap">
 
-  <header class="masthead">
-    <div class="mark">
-      <svg width="96" height="69" viewBox="0 0 68 64" aria-hidden="true">
+<header class="topbar">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="MechInfer home">
+      <svg width="80" height="58" viewBox="0 0 68 64" aria-hidden="true">
         <g stroke="currentColor" fill="none" stroke-linecap="round" style="color:var(--navy)">
           <path d="M10 32 H58" stroke-width="1.6" opacity="0.5"/>
           <line x1="10" y1="24" x2="10" y2="40" stroke-width="2.4"/>
@@ -342,194 +400,243 @@ footer {
         <b>Mech<i>Infer</i></b>
         <span>Mechanism-informed inference</span>
       </span>
-    </div>
-  </header>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#benchmark">Benchmark</a>
+      <a href="#reanalyses">Reanalyses</a>
+      <a href="#method">Method</a>
+      <a href="#engagement">Engagement</a>
+      <a class="cta" href="#enquiries">Enquiries</a>
+    </nav>
+  </div>
+</header>
 
-  <section>
-    <span class="eyebrow">Independent evidence assessment for drug development and deployment</span>
-    <h1>What does your evidence actually support?</h1>
-    <p class="lede">MechInfer is an independent assessment of a programme's evidence. It takes the mechanism and the data you have, and returns the quantities you cannot measure directly, the probability that the whole path from molecule to patient holds, where that path is weakest, and the measurement that would most change the answer.</p>
-    <p class="lede">It is AI-powered, but not trained on past data: the AI reasons from a declared mechanism using Bayesian inference, so every answer can be traced and checked.</p>
-    <p>It is built on mechanism-informed inference: a declared model of the process that produced the data, fitted by Bayesian inference, reported as a calibrated distribution rather than a point estimate. Where the data cannot support a quantity at all, that is the finding, and it is reported as such rather than computed anyway.</p>
-    <p>The page below is arranged so that it can be checked: the benchmark, the reanalyses, the document you would receive, the method, and what the method does not do.</p>
-  </section>
+<main id="top">
 
-  <section>
-    <h2>Benchmark</h2>
-    <p>The framework is checked against published reference values rather than against itself. On the standard population pharmacokinetic benchmark &mdash; the theophylline dataset, 12 subjects, 132 samples &mdash; it recovers the published estimates:</p>
-    <div class="tbl-wrap">
-      <table class="tbl">
-        <thead>
-          <tr><th>Parameter</th><th>Posterior median</th><th>95% interval</th><th>Published</th><th>Ratio</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Clearance</td><td>0.0400 L/h/kg</td><td>0.0333 &ndash; 0.0483</td><td>0.0403</td><td>0.99</td></tr>
-          <tr><td>Volume</td><td>0.459 L/kg</td><td>0.414 &ndash; 0.508</td><td>0.458</td><td>1.00</td></tr>
-          <tr><td>Absorption rate</td><td>1.51 1/h</td><td>1.01 &ndash; 2.31</td><td>1.57</td><td>0.96</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>The claim that matters is not the agreement in the last column but the calibration: the 95% posterior intervals contain 94.7% of the observations, against a nominal 95%. An interval that is honest about its own width is the only kind worth propagating into a decision.</p>
-  </section>
-
-  <section>
-    <h2>Reanalyses</h2>
-    <p>Published studies, reanalysed with the same core, to show what the method finds in real data. These are methodological: the point is what a design can and cannot support, not a verdict on anyone's science.</p>
-    <div class="stack">
-      <div class="finding">
-        <div class="num">The plateau was reached before the first sample</div>
-        <p>In a published gut&ndash;liver barrier transport study, the signal had levelled off before the first measurement at 30 minutes. A permeability calculated from those points describes the sampling schedule rather than the barrier, so it is reported as not estimable. One sample inside the first ten minutes would recover it. The same fit confirms the authors' conclusion on the combination of agents and puts an interval on it: 1.90&times; control, 1.61 &ndash; 2.22.</p>
-        <span class="src">Reanalysis of published transport data, two-concentration control check: observed 11.6&times;, interval 5.3 &ndash; 36.1, containing the predicted 20&times;.</span>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Independent evidence assessment for drug development and deployment</span>
+        <h1>What does your evidence actually support?</h1>
+        <p class="lede">MechInfer is an independent assessment of a programme's evidence. It takes the mechanism and the data you have, and returns the quantities you cannot measure directly, the probability that the whole path from molecule to patient holds, where that path is weakest, and the measurement that would most change the answer.</p>
+        <p class="lede ai">It is AI-powered, but not trained on past data: the AI reasons from a declared mechanism using Bayesian inference, so every answer can be traced and checked.</p>
+        <div class="hero-actions">
+          <a class="btn solid" href="#enquiries">Start with a free reanalysis</a>
+          <a class="btn line" href="#benchmark">See the benchmark</a>
+        </div>
       </div>
-      <div class="finding">
-        <div class="num">A 2.5&times; median ambiguity, from one assumption</div>
-        <p>In a published single-concentration drug screen, the Hill slope cannot be identified from one concentration per compound. Fixing it is unavoidable; what it costs is measurable. Across plausible slopes the implied potencies move by a median factor of 2.5, and for the most potent compounds by 33. Three of eighteen measurements report no activity &mdash; those are bounds, not values, and are reported as bounds.</p>
-        <span class="src">Reanalysis of a published RBD&ndash;ACE2 repurposing screen, 18 compound&ndash;strain measurements.</span>
+      <aside class="facts" aria-label="Key figures">
+        <div class="facts-head"><span>At a glance</span><span>Theophylline benchmark</span></div>
+        <div class="fact"><div class="v">94.7%<small>vs 95% nominal</small></div><div class="k">Observations inside the 95% posterior intervals</div></div>
+        <div class="fact"><div class="v">0.96&ndash;1.00</div><div class="k">Ratio of recovered to published estimates</div></div>
+        <div class="fact"><div class="v">2&ndash;4 weeks</div><div class="k">For a single programme assessment</div></div>
+        <div class="fact"><div class="v">No cost</div><div class="k">First reanalysis, in your own area</div></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="intro">
+    <div class="wrap">
+      <p>It is built on mechanism-informed inference: a declared model of the process that produced the data, fitted by Bayesian inference, reported as a calibrated distribution rather than a point estimate. Where the data cannot support a quantity at all, that is the finding, and it is reported as such rather than computed anyway.</p>
+      <p>The page below is arranged so that it can be checked: the benchmark, the reanalyses, the document you would receive, the method, and what the method does not do.</p>
+    </div>
+  </div>
+
+  <section class="block" id="benchmark">
+    <div class="wrap">
+      <div class="block-label"><span class="idx">01</span><h2>Benchmark</h2></div>
+      <div>
+        <p>The framework is checked against published reference values rather than against itself. On the standard population pharmacokinetic benchmark &mdash; the theophylline dataset, 12 subjects, 132 samples &mdash; it recovers the published estimates:</p>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th>Parameter</th><th>Posterior median</th><th>95% interval</th><th>Published</th><th>Ratio</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Clearance</td><td>0.0400 L/h/kg</td><td>0.0333 &ndash; 0.0483</td><td>0.0403</td><td>0.99</td></tr>
+              <tr><td>Volume</td><td>0.459 L/kg</td><td>0.414 &ndash; 0.508</td><td>0.458</td><td>1.00</td></tr>
+              <tr><td>Absorption rate</td><td>1.51 1/h</td><td>1.01 &ndash; 2.31</td><td>1.57</td><td>0.96</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The claim that matters is not the agreement in the last column but the calibration: the 95% posterior intervals contain 94.7% of the observations, against a nominal 95%. An interval that is honest about its own width is the only kind worth propagating into a decision.</p>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>The same screen, read as potency</h2>
-    <div class="chart" id="chart"></div>
-    <p class="chart-cap">Strain difference per compound from the same published screen, with 95% credible intervals. Teal where the data support a difference, grey where the interval spans one. Two compounds are an order of magnitude <em>more</em> potent against the variant, which percentages of 45&nbsp;&rarr;&nbsp;95 and 57&nbsp;&rarr;&nbsp;99 obscure: the percentage scale compresses exactly where inhibition approaches complete.</p>
+  <section class="block alt" id="reanalyses">
+    <div class="wrap">
+      <div class="block-label"><span class="idx">02</span><h2>Reanalyses</h2></div>
+      <div>
+        <p>Published studies, reanalysed with the same core, to show what the method finds in real data. These are methodological: the point is what a design can and cannot support, not a verdict on anyone's science.</p>
+        <div class="cards">
+          <div class="finding">
+            <div class="num">The plateau was reached before the first sample</div>
+            <p>In a published gut&ndash;liver barrier transport study, the signal had levelled off before the first measurement at 30 minutes. A permeability calculated from those points describes the sampling schedule rather than the barrier, so it is reported as not estimable. One sample inside the first ten minutes would recover it. The same fit confirms the authors' conclusion on the combination of agents and puts an interval on it: 1.90&times; control, 1.61 &ndash; 2.22.</p>
+            <span class="src">Reanalysis of published transport data, two-concentration control check: observed 11.6&times;, interval 5.3 &ndash; 36.1, containing the predicted 20&times;.</span>
+          </div>
+          <div class="finding">
+            <div class="num">A 2.5&times; median ambiguity, from one assumption</div>
+            <p>In a published single-concentration drug screen, the Hill slope cannot be identified from one concentration per compound. Fixing it is unavoidable; what it costs is measurable. Across plausible slopes the implied potencies move by a median factor of 2.5, and for the most potent compounds by 33. Three of eighteen measurements report no activity &mdash; those are bounds, not values, and are reported as bounds.</p>
+            <span class="src">Reanalysis of a published RBD&ndash;ACE2 repurposing screen, 18 compound&ndash;strain measurements.</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <section class="block alt" style="border-top:none;padding-top:0">
+    <div class="wrap">
+      <div class="block-label"><span class="idx">03</span><h2>The same screen, read as potency</h2></div>
+      <div>
+        <div class="chart" id="chart"></div>
+        <p class="chart-cap">Strain difference per compound from the same published screen, with 95% credible intervals. Teal where the data support a difference, grey where the interval spans one. Two compounds are an order of magnitude <em>more</em> potent against the variant, which percentages of 45&nbsp;&rarr;&nbsp;95 and 57&nbsp;&rarr;&nbsp;99 obscure: the percentage scale compresses exactly where inhibition approaches complete.</p>
+      </div>
+    </div>
+  </section>
 
-  <section>
-    <h2>Method</h2>
-    <ul class="steps">
-      <li>
-        <span class="glyph">
-          <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="color:var(--teal)">
-              <line x1="4" y1="2" x2="4" y2="12"/><line x1="1" y1="2" x2="7" y2="2"/><line x1="1" y1="12" x2="7" y2="12"/>
-              <line x1="15" y1="4" x2="15" y2="10"/><line x1="12" y1="4" x2="18" y2="4"/><line x1="12" y1="10" x2="18" y2="10"/>
-            </g>
-          </svg>
-        </span>
-        <div>
+  <section class="block" id="method">
+    <div class="wrap">
+      <div class="block-label"><span class="idx">04</span><h2>Method</h2></div>
+      <ul class="steps">
+        <li>
+          <span class="glyph">
+            <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true">
+              <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="color:var(--teal)">
+                <line x1="4" y1="2" x2="4" y2="12"/><line x1="1" y1="2" x2="7" y2="2"/><line x1="1" y1="12" x2="7" y2="12"/>
+                <line x1="15" y1="4" x2="15" y2="10"/><line x1="12" y1="4" x2="18" y2="4"/><line x1="12" y1="10" x2="18" y2="10"/>
+              </g>
+            </svg>
+          </span>
           <h3>A mechanism, declared in advance</h3>
           <p>The process that produced the data is written down, with parameters that mean something physically: clearance, permeability, potency. Nothing is learned from a corpus. The structure is declared, so it can be argued with, and the fit can contradict it.</p>
-        </div>
-      </li>
-      <li>
-        <span class="glyph">
-          <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="color:var(--teal)">
-              <path d="M2 7 H20" opacity="0.5"/>
-              <line x1="2" y1="5" x2="2" y2="9"/><line x1="11" y1="3" x2="11" y2="11"/><line x1="20" y1="1" x2="20" y2="13"/>
-            </g>
-          </svg>
-        </span>
-        <div>
+        </li>
+        <li>
+          <span class="glyph">
+            <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true">
+              <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="color:var(--teal)">
+                <path d="M2 7 H20" opacity="0.5"/>
+                <line x1="2" y1="5" x2="2" y2="9"/><line x1="11" y1="3" x2="11" y2="11"/><line x1="20" y1="1" x2="20" y2="13"/>
+              </g>
+            </svg>
+          </span>
           <h3>Uncertainty carried along the chain</h3>
           <p>A development decision rests on a sequence of separate studies. Each is propagated on common posterior draws, so correlations induced upstream survive into the joint result. The chain reports two different weakest links &mdash; the one least likely to hold, and the one least well evidenced. They are rarely the same link, and reporting only the first is how a chain of weak evidence comes to look like a confident conclusion.</p>
-        </div>
-      </li>
-      <li>
-        <span class="glyph">
-          <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="color:var(--teal)">
-              <line x1="4" y1="1" x2="4" y2="13"/><line x1="1" y1="1" x2="7" y2="1"/><line x1="1" y1="13" x2="7" y2="13"/>
-              <line x1="16" y1="5" x2="16" y2="9"/><line x1="13" y1="5" x2="19" y2="5"/><line x1="13" y1="9" x2="19" y2="9"/>
-            </g>
-          </svg>
-        </span>
-        <div>
+        </li>
+        <li>
+          <span class="glyph">
+            <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true">
+              <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="color:var(--teal)">
+                <line x1="4" y1="1" x2="4" y2="13"/><line x1="1" y1="1" x2="7" y2="1"/><line x1="1" y1="13" x2="7" y2="13"/>
+                <line x1="16" y1="5" x2="16" y2="9"/><line x1="13" y1="5" x2="19" y2="5"/><line x1="13" y1="9" x2="19" y2="9"/>
+              </g>
+            </svg>
+          </span>
           <h3>The next experiment, valued against the decision</h3>
           <p>Every uncertain quantity is ranked by how much measuring it would change what the programme does, at a stated measurement precision rather than a perfect one. A quantity can carry wide uncertainty and still be worth nothing to measure, if no value it could take would alter the decision. Weak evidence and decision relevance are different things, and only one of them is worth an experiment.</p>
-        </div>
-      </li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Writing</h2>
-    <ul class="papers">
-      <li>
-        <span class="t">Mechanism-informed inference models: a category and its scope conditions</span>
-        <span class="v">Working paper &middot; SSRN</span>
-      </li>
-      <li>
-        <span class="t">What a tissue model can and cannot tell us: identifiability in barrier transport</span>
-        <span class="v">In preparation</span>
-      </li>
-      <li>
-        <span class="t">What a single concentration can tell us: potency from percent inhibition</span>
-        <span class="v">In preparation</span>
-      </li>
-    </ul>
-    <p style="margin-top:1.4rem">The inference core, the modules built on it, and the scripts that reproduce every number on this page are maintained as a single codebase. It is the working platform rather than a public release, but any number on this page can be reproduced on request, with the script that produces it.</p>
-  </section>
-
-
-  <section>
-    <div class="limits">
-      <h2>What it does not do</h2>
-      <ul>
-        <li>It does not predict clinical outcome. It states what the supplied evidence supports under stated assumptions, and names the assumptions.</li>
-        <li>It cannot supply information an experiment did not contain. It can avoid discarding what is there, and refuse to invent what is not.</li>
-        <li>A mechanism may be incomplete or wrong. Conclusions are conditional on it, and must be tested under the conditions the decision will be made in.</li>
-        <li>It is not a regulatory qualification. Where a method is intended for a regulatory submission, the assessment documents the evidence for that specific context of use; the qualification itself is the agency's to grant.</li>
-        <li>Every assessment is signed by a named person who is accountable for it. Inference can propagate uncertainty and rank experiments; it cannot be accountable.</li>
+        </li>
       </ul>
     </div>
   </section>
 
-  <section>
-    <h2>What an engagement looks like</h2>
-    <dl class="defs">
-      <dt>What you send</dt>
-      <dd>The data as you have it, the mechanism as you understand it, and the decision you are facing &mdash; stated as a threshold, since the value of any measurement depends on what you would do differently. Published or summary-level data is enough to begin.</dd>
-      <dt>What comes back</dt>
-      <dd>A signed assessment: the quantities inferred with their intervals, the probability the path holds, both weakest links, the experiments ranked by what they are worth against your threshold, the assumptions register, and the limits. Where a quantity is not estimable from the design, that finding and the design change that would fix it.</dd>
-      <dt>How long</dt>
-      <dd>Two to four weeks for a single programme, depending on how much of the mechanism has to be specified from scratch.</dd>
-      <dt>First conversation</dt>
-      <dd>A reanalysis of something already published in your area, at no cost, so the method is judged on your own subject matter rather than on this page.</dd>
-    </dl>
+  <section class="block alt" id="limits">
+    <div class="wrap">
+      <div class="block-label"><span class="idx">05</span><h2>What it does not do</h2></div>
+      <div class="limits">
+        <ul>
+          <li>It does not predict clinical outcome. It states what the supplied evidence supports under stated assumptions, and names the assumptions.</li>
+          <li>It cannot supply information an experiment did not contain. It can avoid discarding what is there, and refuse to invent what is not.</li>
+          <li>A mechanism may be incomplete or wrong. Conclusions are conditional on it, and must be tested under the conditions the decision will be made in.</li>
+          <li>It is not a regulatory qualification. Where a method is intended for a regulatory submission, the assessment documents the evidence for that specific context of use; the qualification itself is the agency's to grant.</li>
+          <li>Every assessment is signed by a named person who is accountable for it. Inference can propagate uncertainty and rank experiments; it cannot be accountable.</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
-
-
-  <section>
-    <h2>Enquiries</h2>
-    <p>Send the decision you are facing and the evidence you have. Published or summary-level data is enough to begin.</p>
-    <form class="form" id="enquiry" method="POST" action="https://formspree.io/f/mzeevnrn">
-      <div class="pair">
-        <div class="field">
-          <label for="f-name">Name</label>
-          <input id="f-name" name="name" type="text" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label for="f-email">Email</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" required>
-        </div>
-      </div>
-      <div class="field">
-        <label for="f-org">Organisation</label>
-        <input id="f-org" name="organisation" type="text" autocomplete="organization">
-      </div>
-      <div class="field">
-        <label for="f-msg">The decision, and what evidence bears on it</label>
-        <textarea id="f-msg" name="message" required></textarea>
-      </div>
-      <div class="hp" aria-hidden="true">
-        <label for="f-hp">Leave this empty</label>
-        <input id="f-hp" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
-      </div>
-      <button type="submit">Send</button>
-      <p class="form-status" id="enquiry-status" role="status" aria-live="polite"></p>
-    </form>
+  <section class="block" id="engagement">
+    <div class="wrap">
+      <div class="block-label"><span class="idx">06</span><h2>What an engagement looks like</h2></div>
+      <dl class="defs">
+        <div><dt>What you send</dt>
+        <dd>The data as you have it, the mechanism as you understand it, and the decision you are facing &mdash; stated as a threshold, since the value of any measurement depends on what you would do differently. Published or summary-level data is enough to begin.</dd></div>
+        <div><dt>What comes back</dt>
+        <dd>A signed assessment: the quantities inferred with their intervals, the probability the path holds, both weakest links, the experiments ranked by what they are worth against your threshold, the assumptions register, and the limits. Where a quantity is not estimable from the design, that finding and the design change that would fix it.</dd></div>
+        <div><dt>How long</dt>
+        <dd>Two to four weeks for a single programme, depending on how much of the mechanism has to be specified from scratch.</dd></div>
+        <div><dt>First conversation</dt>
+        <dd>A reanalysis of something already published in your area, at no cost, so the method is judged on your own subject matter rather than on this page.</dd></div>
+      </dl>
+    </div>
   </section>
 
-  <footer>
+  <section class="block" id="writing">
+    <div class="wrap">
+      <div class="block-label"><span class="idx">07</span><h2>Writing</h2></div>
+      <div>
+        <ul class="papers">
+          <li>
+            <span class="t">Mechanism-informed inference models: a category and its scope conditions</span>
+            <span class="v">Working paper &middot; SSRN</span>
+          </li>
+          <li>
+            <span class="t">What a tissue model can and cannot tell us: identifiability in barrier transport</span>
+            <span class="v">In preparation</span>
+          </li>
+          <li>
+            <span class="t">What a single concentration can tell us: potency from percent inhibition</span>
+            <span class="v">In preparation</span>
+          </li>
+        </ul>
+        <p style="margin-top:1.6rem;color:var(--ink-soft)">The inference core, the modules built on it, and the scripts that reproduce every number on this page are maintained as a single codebase. It is the working platform rather than a public release, but any number on this page can be reproduced on request, with the script that produces it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="enquiries">
+    <div class="wrap">
+      <div>
+        <h2>Enquiries</h2>
+        <p class="big">What does your evidence actually support?</p>
+        <p>Send the decision you are facing and the evidence you have. Published or summary-level data is enough to begin.</p>
+      </div>
+      <form class="form" id="enquiry" method="POST" action="https://formspree.io/f/mzeevnrn">
+        <div class="pair">
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-org">Organisation</label>
+          <input id="f-org" name="organisation" type="text" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="f-msg">The decision, and what evidence bears on it</label>
+          <textarea id="f-msg" name="message" required></textarea>
+        </div>
+        <div class="hp" aria-hidden="true">
+          <label for="f-hp">Leave this empty</label>
+          <input id="f-hp" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <button type="submit">Send</button>
+        <p class="form-status" id="enquiry-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
     <span>MechInfer &middot; mechanism-informed inference</span>
     <span>&copy; 2026</span>
-  </footer>
-
-</div>
+  </div>
+</footer>
 
 <script>
 (function () {
